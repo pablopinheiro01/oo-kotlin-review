@@ -1,43 +1,24 @@
 package br.com.alura.bytebank
 
-import br.com.alura.bytebank.modelo.*
-import br.com.alura.bytebank.teste.testaContasDiferentes
+import br.com.alura.bytebank.modelo.Endereco
 
 fun main() {
+    println("início main")
 
 
-    println(fazAlgumaCoisa( texto = "Oi"))
-    println(fazAlgumaCoisa( texto = 10))
-    println(fazAlgumaCoisa( texto = 10.5))
 
-
-    imprime(15)
-    imprime("texto")
-    imprime(false)
-
-    val endereco = Endereco()
-
-    imprime(endereco)
-    imprime( Any() )
-
-    val teste: Any = imprime(endereco)
-    println(teste)
-
-    val enderecoPrimario = Endereco(logradouro = "Rua total", cep = "123456", cidade="Franco Da Rocha")
-    val enderecoSecundario = Endereco(logradouro = "Rua total", cep = "123456", cidade="Franco Da Rocha")
-
-    println(enderecoPrimario.equals(enderecoSecundario))
-    println(enderecoPrimario.hashCode())
-    println(enderecoSecundario.hashCode())
-
+    println("fim main")
 }
 
-fun fazAlgumaCoisa(texto: Any): Any {
-    return texto
+public fun tratandoInformacoesNulas() {
+    var endereco: Endereco? = null
+    //? (safe call operator) <- interrogacao indica que pode ser nulo
+    // !! (no null assert operator) <- indica que temos certeza que o objeto nao esta nulo
+    endereco!!.logradouro
+
+    val enderecoNaoNulo: Endereco = endereco!!
+    enderecoNaoNulo.logradouro
 }
 
-fun imprime(valor: Any) : Any{
-    println(valor)
-    return valor
-}
+
 
