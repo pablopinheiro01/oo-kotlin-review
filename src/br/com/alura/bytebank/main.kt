@@ -1,40 +1,40 @@
 package br.com.alura.bytebank
 
-import br.com.alura.bytebank.teste.testaNullable
-
 fun main() {
 
-//    testaTipoFuncaoReferencia()
-//    testaTipoFuncaoClasses()
+    testaTipoFuncaoReferencia()
+    testaTipoFuncaoClasses()
 
-
-    val minhaFuncaoLambda: () -> Unit = {
-        println("Executa como lambda")
-    }
-
-    println("Sem execucao $minhaFuncaoLambda")
-    println("Com execucao ${minhaFuncaoLambda()}")
-
-
-    //nao da para reutilizar a logica da funcao anonima ou lambda
-    //elas ficam vinculadas a variavel
-    val minhaFuncaoAnonima: () -> Unit = fun () {
-        println("executa como anonima")
-    }
-
-    println("Sem execucao $minhaFuncaoAnonima")
-
-    println("Com execucao ${minhaFuncaoAnonima()}")
+//
+//    val minhaFuncaoLambda: () -> Unit = {
+//        println("Executa como lambda")
+//    }
+//
+//    println("Sem execucao $minhaFuncaoLambda")
+//    println("Com execucao ${minhaFuncaoLambda()}")
+//
+//
+//    //nao da para reutilizar a logica da funcao anonima ou lambda
+//    //elas ficam vinculadas a variavel
+//    val minhaFuncaoAnonima: () -> Unit = fun () {
+//        println("executa como anonima")
+//    }
+//
+//    println("Sem execucao $minhaFuncaoAnonima")
+//
+//    println("Com execucao ${minhaFuncaoAnonima()}")
 
 
 
 }
 
 fun testaTipoFuncaoClasses() {
-    val minhaFuncaoClasse: () -> Unit = Teste()
+    //fiz a instancia da classe, nao preciso enviar nenhum parametro nersse momento
+    val minhaFuncaoClasse: (Int, Int) -> Int = Soma()
 
+    //quando vamos executar o codigo vamos passar o parametro
     //UTILIZANDO O minhaFuncaoClasse com os parenteses () eu executo o invoke.
-    println(minhaFuncaoClasse())
+    println(minhaFuncaoClasse(10,10))
 }
 
 fun testaTipoFuncaoReferencia() {
@@ -42,17 +42,17 @@ fun testaTipoFuncaoReferencia() {
     //todo tipo de funcao exige um retorno
     //tipo funcao a gente tambem assume que podemos usar uma variavel para fazer uma execução
     //tipo funcao e como se fosse uma interface
-    var minhaFuncao: () -> Unit = ::teste
-
-    println(minhaFuncao())
+    var minhaFuncao: (Int, Int) -> Int = ::soma
+    println(minhaFuncao(5,10))
 }
 
-fun teste(){ }
+fun soma(a: Int, b: Int): Int{
+    return a + b
+}
 
 //classe sendo executada como tipo Função
-class Teste : () -> Unit {
-    override fun invoke() {
-        println("Executa invoke do teste")
-    }
+class Soma : (Int, Int) -> Int {
+
+    override fun invoke(a: Int, b: Int): Int = a + b
 
 }
