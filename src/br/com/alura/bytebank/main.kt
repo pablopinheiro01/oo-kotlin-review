@@ -1,62 +1,72 @@
 package br.com.alura.bytebank
 
-import br.com.alura.bytebank.modelo.Autenticavel
+import br.com.alura.bytebank.modelo.Cliente
+import br.com.alura.bytebank.modelo.ContaPoupanca
 import br.com.alura.bytebank.modelo.Endereco
-import br.com.alura.bytebank.modelo.SistemaInterno
+import br.com.alura.bytebank.teste.testaHigherOrderFunctions
+
 
 fun main() {
 
-    var endereco = Endereco(logradouro = "Rua Vergueiro", numero = 3185)
-    val enderecoMaiusculo = "${endereco.logradouro}, ${endereco.numero}".toUpperCase()
-    println(enderecoMaiusculo)
 
-    Endereco(logradouro = "Rua Vergueiro", numero = 3185)
-        .let{endereco ->
-            "${endereco.logradouro}, ${endereco.numero}".toUpperCase()
-//    }.let{ //podemos retornar explicitamente no codigo
-//        enderecoEmMaiusculo ->
-//        println(enderecoEmMaiusculo)
-            //ou podemos referenciar o retorno de uma forma mais resumida
-        }.let(::println)
+    testaHigherOrderFunctions()
 
-    var enderecosComComplemento =
-        listOf(Endereco(logradouro = "Rua Vergueiro", numero = 3185), Endereco(), Endereco(complemento = "Casa"))
-            .filter { endereco -> endereco.complemento.isNotEmpty() }
 
-    println(enderecosComComplemento)
-
-    listOf(Endereco(logradouro = "Rua Vergueiro", numero = 3185), Endereco(), Endereco(complemento = "Casa"))
-        .filter(predicate ={ endereco -> endereco.complemento.isNotEmpty()})
-        .let(block = ::println)
-
-    //higher order function, quando temos uma funcao que recebe ou devolve outra funcao
-    //nao e muito utilizado, mas e possivel
-    //o mais comum é uma funcao que recebe outra
-    Endereco().let{
-
-    }
-
-    soma(1,5){
-        println(it)
-    }
-
-    soma(2,9, resultado = (::println))
-
-    var autenticavel = object : Autenticavel {
-        val senha = 1234
-        override fun autentica(senha: Int) = this.senha == senha
-    }
-
-    SistemaInterno().entra(autenticavel, 1234, autenticado = {
-        println("Realizar o pagamento")
-    })
 
 }
 
-fun soma(a: Int, b: Int, resultado: (Int) -> Unit){
-    println("antes da soma")
-    //preciso executar o resultado
-    resultado(a+b)
-    println("Depois da soma")
+fun testaRun() {
+    val taxaAnual = 0.05
+    val taxaMensal: Double = taxaAnual / 12
 
+    println("Taxa mensal $taxaMensal")
+
+    Cliente(nome = "Joao", cpf = "111.111.111-11", senha = 1234)
+        .let { clienteNovo: Cliente ->
+            ContaPoupanca(clienteNovo, 1000)
+        }.run {
+            deposita(1000.0)
+            //saldo foi acessado diretamente do objeto retornando no let.
+            saldo * taxaMensal
+        }.let { rendimentoMensal ->
+            println(rendimentoMensal)
+        }
+
+
+    val contaPoupanca = ContaPoupanca(Cliente(nome = "Alex", cpf = "111.111.111-11", senha = 1234), 1000)
+
+    contaPoupanca.run{
+        deposita(1000.0)
+        saldo * taxaMensal
+    }.let{
+        rendimentoMensal: Double ->
+        println("rendimento mensal: $rendimentoMensal")
+    }
+
+    val rendimentoAnual = run {
+        var saldo: Double = contaPoupanca.saldo
+        repeat(12) { indice ->
+            saldo += saldo * taxaMensal
+        }
+        saldo
+    }
+
+    println("Simulação rendimento anual $rendimentoAnual")
 }
+
+fun testaWith() {
+    //pega o endereco, coloca as informações e devolve completo como se fosse uma string
+    with(Endereco()) {
+        logradouro = "Rua vergueiro"
+        numero = 3185
+        bairro = "Vila Mariana"
+        cidade = "São Paulo"
+        estado = "SP"
+        cep = "065450-000"
+        complemento = "Sala Comercial"
+        completo()
+    }.let { enderecoCompleto: String -> println(enderecoCompleto) }
+}
+
+
+
