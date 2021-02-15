@@ -1,29 +1,45 @@
 package br.com.alura.bytebank
 
 fun main() {
+//
+//    testaTipoFuncaoReferencia()
+//    testaTipoFuncaoClasses()
 
-    testaTipoFuncaoReferencia()
-    testaTipoFuncaoClasses()
 
-//
-//    val minhaFuncaoLambda: () -> Unit = {
-//        println("Executa como lambda")
-//    }
-//
-//    println("Sem execucao $minhaFuncaoLambda")
-//    println("Com execucao ${minhaFuncaoLambda()}")
-//
-//
-//    //nao da para reutilizar a logica da funcao anonima ou lambda
-//    //elas ficam vinculadas a variavel
-//    val minhaFuncaoAnonima: () -> Unit = fun () {
-//        println("executa como anonima")
-//    }
-//
-//    println("Sem execucao $minhaFuncaoAnonima")
-//
-//    println("Com execucao ${minhaFuncaoAnonima()}")
+    val minhaFuncaoLambda: (Int, Int) -> Int = {
+            //defino os parametros que serao inseridos como o A e o B declarado
+            a,b ->
+        // quando definimos dessa forma indicamos que nao vamos utilizar =
+        // _ , _
 
+        //aqui eu defino a operacao e a expressao lambada ja compreende que esse e o retorno
+        //a expressao lambda devolve sempre a ultima referencia executada
+        a + b
+    }
+
+    val minhaFuncaoLambadaComInferencia = { a: Int, b: Int -> a + b }
+
+    println("Sem execucao $minhaFuncaoLambda")
+    println("Com execucao ${minhaFuncaoLambda(20 , 10)}")
+
+
+    //nao da para reutilizar a logica da funcao anonima ou lambda
+    //elas ficam vinculadas a variavel
+    val minhaFuncaoAnonima: () -> Unit = fun () {
+        println("executa como anonima")
+    }
+
+    //funcao anonima devemos considerar quando deixar bem claro os parametros e o retorno e o escopo da execução do codigo
+    val minhaFuncaoAnonimaComRetorno: ( Int, Int) -> Int = fun(a , b) : Int {
+        println("executa como anonima")
+        //tenho que declarar o que eu quero retornar
+        return a + b
+    }
+
+    println("Sem execucao $minhaFuncaoAnonima")
+
+    println("Com execucao ${minhaFuncaoAnonima()}")
+    println("Com execucao ${minhaFuncaoAnonimaComRetorno(5,20)}")
 
 
 }
