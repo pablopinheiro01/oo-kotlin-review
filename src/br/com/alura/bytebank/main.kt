@@ -41,6 +41,25 @@ fun main() {
     println("Com execucao ${minhaFuncaoAnonima()}")
     println("Com execucao ${minhaFuncaoAnonimaComRetorno(5,20)}")
 
+    val calculaBonificacao: (salario: Double) -> Double = lambda@{ salario ->
+        if(salario > 1000.0){
+            //@Lambda vai ser uma referencia que possibilita retornos diferentes
+            return@lambda salario + 50
+            //o return se for usado ele sempre vai se referencia a instrução que esta acima, no caso da main que é unit dessa situação
+        }
+        //sempre retorna a ultima instrução
+        return@lambda salario + 100.0
+    }
+    println(calculaBonificacao(1500.0))
+
+    val calculaBonificacaoAnonima: (salario:Double) -> Double = fun(salario): Double {
+        if(salario > 1000.0){
+            return salario + 50
+        }
+        return salario + 100.0
+    }
+
+    println(calculaBonificacaoAnonima(1500.0))
 
 }
 
